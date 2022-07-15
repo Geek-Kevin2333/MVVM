@@ -96,12 +96,36 @@ CompileUtil={
     },
     text(node, vm, expr) {//文本处理
         let updateFn = this.updater['textUpdater'];
-       let value=this.getTextVal(vm,expr)
+        let value=this.getTextVal(vm,expr)
+        //R expr的形式可能是{{a}}{{b}}
+        expr.replace(/\{\{([^}]+)\}\}/g,(...argument)=>{
+          new Watcher(vm,argument[1],()=>{
+              //如果数据变化了，文本节点需要重新获取依赖的属性，更新文本中的内容
+              updateFn && updateFn(node,this.getTextVal(vm,expr))
+          })
+        })
         updateFn && updateFn(node,value)
-    }
-    ,
+    },
+    setVal(vm, expr, newVal) {
+        expr = expr.split('.')
+        return expr.reduce((prev,next,currentIndex)=>{
+            if (currentIndex === expr.length - 1) {
+                return prev[next] = newVal
+            }
+            return prev[next]
+        },vm.$data)
+    },
     model(node,vm,expr){//输入框处理
         let updateFn = this.updater['modelUpdater'];
+        //这里有一个监控 当数据变化了 有关调用这个watch的callback函数
+        new Watcher(vm,expr,(newValue)=>{
+            //值变化后会调用cb，将新值传递过来
+            updateFn && updateFn(node,this.getVal(vm,expr))
+        })
+        node.addEventListener('input', (e) => {
+            let newValue = e.target.value
+            this.setVal(vm,expr,newValue)
+        });
         updateFn && updateFn(node,this.getVal(vm,expr))
     }
     ,
@@ -116,3 +140,4 @@ CompileUtil={
         }
     }
 }
+
