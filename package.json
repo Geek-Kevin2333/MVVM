@@ -1,0 +1,23 @@
+{
+  "name": "MVVM",
+  "version": "1.0.0",
+  "description": "",
+  "main": "MVVM.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Geek-Kevin2333/MVVM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Geek-Kevin2333/MVVM/issues"
+  },
+  "homepage": "https://github.com/Geek-Kevin2333/MVVM#readme",
+  "devDependencies": {
+    "jest": "^28.1.3"
+  }
+}
