@@ -53,3 +53,5 @@ class Dep{
         })
     }
 }
+
+module.exports={Observer,Dep}

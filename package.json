@@ -4,7 +4,7 @@
   "description": "",
   "main": "MVVM.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,14 @@
   },
   "homepage": "https://github.com/Geek-Kevin2333/MVVM#readme",
   "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "babel-jest": "^28.1.3",
     "jest": "^28.1.3"
+  },
+  "dependencies": {
+    "jest-environment-jsdom": "^28.1.3",
+    "jquery": "^3.6.0",
+    "whatwg-fetch": "^3.6.2"
   }
 }

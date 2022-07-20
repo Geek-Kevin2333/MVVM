@@ -1,3 +1,4 @@
+
 class Compile{
     constructor(el,vm) {
         //el可能就是dom节点，也有可能需要自己获取
@@ -65,7 +66,7 @@ class Compile{
                 let expr = attr.value;
             //    v-model v-text v-html 有多个v-指令type
                 let [,type] = attr.name.split('-')
-                CompileUtil[type](node, this.vm, expr);
+                this.CompileUtil[type](node, this.vm, expr);
             }
 
         })
@@ -76,68 +77,69 @@ class Compile{
         //取{{}}中字符的内容
         let reg = /\{\{([^}]+)\}\}/g
         if(reg.test(expr)){
-            CompileUtil['text'](node, this.vm, expr);
+           this.CompileUtil['text'](node, this.vm, expr);
         }
     }
 
-}
-
-CompileUtil={
-    getVal(vm,expr){
-        expr = expr.split('.') //处理 message.a.b.c这样的expr
-        return expr.reduce((prev,next)=>{
-            return prev[next]  //第一次就是 vm.$data.a
-        },vm.$data)
-    },
-    getTextVal(vm,expr){ //获取编译文本之后的结果
-       return  expr.replace(/\{\{([^}]+)\}\}/g,(...argument)=>{
-            return this.getVal(vm,argument[1])
-        })
-    },
-    text(node, vm, expr) {//文本处理
-        let updateFn = this.updater['textUpdater'];
-        let value=this.getTextVal(vm,expr)
-        //R expr的形式可能是{{a}}{{b}}
-        expr.replace(/\{\{([^}]+)\}\}/g,(...argument)=>{
-          new Watcher(vm,argument[1],()=>{
-              //如果数据变化了，文本节点需要重新获取依赖的属性，更新文本中的内容
-              updateFn && updateFn(node,this.getTextVal(vm,expr))
-          })
-        })
-        updateFn && updateFn(node,value)
-    },
-    setVal(vm, expr, newVal) {
-        expr = expr.split('.')
-        return expr.reduce((prev,next,currentIndex)=>{
-            if (currentIndex === expr.length - 1) {
-                return prev[next] = newVal
-            }
-            return prev[next]
-        },vm.$data)
-    },
-    model(node,vm,expr){//输入框处理
-        let updateFn = this.updater['modelUpdater'];
-        //这里有一个监控 当数据变化了 有关调用这个watch的callback函数
-        new Watcher(vm,expr,(newValue)=>{
-            //值变化后会调用cb，将新值传递过来
-            updateFn && updateFn(node,this.getVal(vm,expr))
-        })
-        node.addEventListener('input', (e) => {
-            let newValue = e.target.value
-            this.setVal(vm,expr,newValue)
-        });
-        updateFn && updateFn(node,this.getVal(vm,expr))
-    }
-    ,
-    updater: {
-        //文本更新
-        textUpdater(node,value) {
-            node.textContent = value;
+    CompileUtil={
+        getVal(vm,expr){
+            expr = expr.split('.') //处理 message.a.b.c这样的expr
+            return expr.reduce((prev,next)=>{
+                return prev[next]  //第一次就是 vm.$data.a
+            },vm.$data)
         },
-        //输入框更新
-        modelUpdater(node,value){
-            node.value = value;
+        getTextVal(vm,expr){ //获取编译文本之后的结果
+            return  expr.replace(/\{\{([^}]+)\}\}/g,(...argument)=>{
+                return this.getVal(vm,argument[1])
+            })
+        },
+        text(node, vm, expr) {//文本处理
+            let updateFn = this.updater['textUpdater'];
+            let value=this.getTextVal(vm,expr)
+            //R expr的形式可能是{{a}}{{b}}
+            expr.replace(/\{\{([^}]+)\}\}/g,(...argument)=>{
+                new Watcher(vm,argument[1],()=>{
+                    //如果数据变化了，文本节点需要重新获取依赖的属性，更新文本中的内容
+                    updateFn && updateFn(node,this.getTextVal(vm,expr))
+                })
+            })
+            updateFn && updateFn(node,value)
+        },
+        setVal(vm, expr, newVal) {
+            expr = expr.split('.')
+            return expr.reduce((prev,next,currentIndex)=>{
+                if (currentIndex === expr.length - 1) {
+                    return prev[next] = newVal
+                }
+                return prev[next]
+            },vm.$data)
+        },
+        model(node,vm,expr){//输入框处理
+            let updateFn = this.updater['modelUpdater'];
+            //这里有一个监控 当数据变化了 有关调用这个watch的callback函数
+            new Watcher(vm,expr,(newValue)=>{
+                //值变化后会调用cb，将新值传递过来
+                updateFn && updateFn(node,this.getVal(vm,expr))
+            })
+            node.addEventListener('input', (e) => {
+                let newValue = e.target.value
+                this.setVal(vm,expr,newValue)
+            });
+            updateFn && updateFn(node,this.getVal(vm,expr))
+        }
+        ,
+        updater: {
+            //文本更新
+            textUpdater(node,value) {
+                node.textContent = value;
+            },
+            //输入框更新
+            modelUpdater(node,value){
+                node.value = value;
+            }
         }
     }
+
 }
 
+module.exports={Compile}
