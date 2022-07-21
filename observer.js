@@ -54,4 +54,4 @@ class Dep{
     }
 }
 
-module.exports={Observer,Dep}
+module.exports={Observer}

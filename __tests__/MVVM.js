@@ -1,4 +1,4 @@
-import Watcher from '../watcher'
+import {Watcher} from "../watcher";
 import {Observer} from "../observer";
 import {Compile} from "../compile";
 import {MVVM} from "../MVVM";
@@ -12,6 +12,8 @@ const html = fs.readFileSync(path.resolve('D:\\CODE\\MVVM', './MVVM.html'), 'utf
 jest.dontMock('fs');
 
 let options={}
+
+
 
 describe('$', function () {
     beforeEach(() => {
@@ -33,9 +35,11 @@ describe('$', function () {
         expect(options.data.message).hasOwnProperty('set')
         done()
     })
-    test('observer，测试发布订阅模式',function (done) {
 
-    })
+    test('将data的属性添加到vm(proxyData)测试' , ()=>{
+        let vm = new MVVM(options);
+        expect(vm.hasOwnProperty('message')).toBe(true);
+    });
 
 
 });

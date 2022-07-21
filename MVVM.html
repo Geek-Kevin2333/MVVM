@@ -5,11 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-    <div id="app">
-        <input id="inputText" type="text" v-model="message.a">
-        <div>{{message.a}}</div>
-        {{message.a}}
-    </div>
+
+
+<div id="app">
+    <h2>双向绑定</h2>
+    <input id="inputText" type="text" v-model="message.a">
+    <div>{{message.a}}</div>
+    {{message.a}}
+    <br>
+    <h2>单向绑定</h2>
+    {{message.b}}
+</div>
+
     <script src="MVVM.js"></script>
     <script src="compile.js"></script>
     <script src="observer.js"></script>
@@ -19,7 +26,8 @@
         el:"#app",
         data:{
             message:{
-                a:'hello'
+                a:'双向绑定',
+                b:'单向绑定'
             }
         }
     })
