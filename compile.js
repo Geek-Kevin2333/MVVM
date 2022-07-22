@@ -1,5 +1,4 @@
-
-class Compile{
+export default class Compile{
     constructor(el,vm) {
         //el可能就是dom节点，也有可能需要自己获取
         this.el = this.isElementNode(el) ? el : document.querySelector(el);
@@ -142,4 +141,3 @@ class Compile{
 
 }
 
-module.exports={Compile}

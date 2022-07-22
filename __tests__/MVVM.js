@@ -1,7 +1,7 @@
-import {Watcher} from "../watcher";
-import {Observer} from "../observer";
-import {Compile} from "../compile";
-import {MVVM} from "../MVVM";
+import Watcher from "../watcher";
+import Observer from "../observer";
+import Compile from "../compile";
+import MVVM from "../MVVM";
 import 'whatwg-fetch'
 import $ from "jquery"
 import {re} from "@babel/core/lib/vendor/import-meta-resolve";

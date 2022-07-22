@@ -1,4 +1,4 @@
-class Observer{
+export default class Observer{
     constructor(data) {
         this.observe(data)
     }
@@ -54,4 +54,3 @@ class Dep{
     }
 }
 
-module.exports={Observer}
