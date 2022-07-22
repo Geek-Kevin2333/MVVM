@@ -277,3 +277,52 @@ class Dep{
 
 ## 要求4：单元测试
 
+```javascript
+import Watcher from "../watcher";
+import Observer from "../observer";
+import Compile from "../compile";
+import MVVM from "../MVVM";
+import 'whatwg-fetch'
+import $ from "jquery"
+import {re} from "@babel/core/lib/vendor/import-meta-resolve";
+
+const fs = require('fs');
+const path = require('path');
+const html = fs.readFileSync(path.resolve('D:\\CODE\\MVVM', './MVVM.html'), 'utf8');
+jest.dontMock('fs');
+
+let options={}
+
+
+
+describe('$', function () {
+    beforeEach(() => {
+        document.documentElement.innerHTML = html.toString();
+        options={
+            el:"#app",
+            data:{
+                message:{
+                    a:'hello'
+                }
+            }
+        }
+
+    });
+    afterEach(jest.resetModules);
+    test('observer,测试数据劫持' , function (done) {
+        let observer=new Observer(options.data)
+        expect(options.data.message).hasOwnProperty('get')
+        expect(options.data.message).hasOwnProperty('set')
+        done()
+    })
+
+    test('将data的属性添加到vm(proxyData)测试' , ()=>{
+        let vm = new MVVM(options);
+        expect(vm.hasOwnProperty('message')).toBe(true);
+    });
+
+
+});
+```
+
+![img](README.assets/A993B4FDF99D93768BF96FD72ED7A8BD.png)
