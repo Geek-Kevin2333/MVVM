@@ -1,4 +1,4 @@
-export default class Observer{
+class Observer{
     constructor(data) {
         this.observe(data)
     }

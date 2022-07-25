@@ -1,4 +1,4 @@
-export default class MVVM{ //桥梁作用--将compile和数据劫持连接在一起
+class MVVM{ //桥梁作用--将compile和数据劫持连接在一起
     constructor(options) {
     //    先把可用的数据挂载在实例（this上面）便于复用
         this.$el=options.el

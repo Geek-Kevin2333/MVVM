@@ -1,6 +1,6 @@
 /*观察者的目的就是给需要变化的元素增加一个观察者，当数据变化后有对应的
 * 方法.用新值和老值作比较，如果发送变化，就调用更新方法*/
-export default class Watcher{
+class Watcher{
     constructor(vm,expr,cb) {
         this.vm=vm
         this.expr=expr
